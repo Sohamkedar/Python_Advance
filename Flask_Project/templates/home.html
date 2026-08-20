@@ -4,9 +4,38 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <!-- <link rel="stylesheet" href="static/css/home.css"> -->
 </head>
 <body>
+    <style>
+        p{
+            color: black;
+        }
+    </style>
+
     {% include 'nav.html' %}
-    <h1>Flask Home Page</h1>
+    <h1 style="color: rgb(158, 45, 177);">Flask Home Page</h1>
+    <p>
+       Lorem ipsum dolor, sit amet consectetur adipisicing elit. 
+       Veniam laborum corrupti, aliquid accusantium quibusdam velit similique dignissimos architecto eveniet, earum, a officiis eos laudantium ex libero amet laboriosam omnis at?
+    </p>
+
+<img src="../static/images/image.jpeg" alt="image" height="300px">
+
+<button onclick="myclick()">Click Me</button>
+
+<!-- <script>
+    function myclick(){
+        alert("I am internal JS");
+    }
+</script> -->
+
+<!-- <script src="../static/js/home.js"></script> -->
+
+
+<script src="{{url_for('static',filename='js/home.js')}}"></script>
+
+
+<script src="{{url_for('static',filename='css/home.css')}}"></script>
 </body>
 </html>
