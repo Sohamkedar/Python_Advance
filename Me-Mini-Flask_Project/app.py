@@ -67,6 +67,35 @@ def deletestudent(id):
 
     return redirect(url_for("viewdata"))
 
+@app.route("/updatestudent/<int:id>")
+def updatestudent(id):
+    con=sq.connect("flask.db")
+    cur=con.cursor()
+    data=cur.execute("SELECT * FROM reg where id=?",[id])
+    data=cur.fetchone()
+    con.commit()
+
+    return render_template("update.html", data=data) 
+
+@app.route("/profileupdate", methods=["GET","POST"])
+def profileupdate():
+    if request.method=="POST":
+        id=request.form["id"]
+        fullname = request.form["fullname"]
+        email = request.form["email"]
+        contact = request.form["contact"]
+        city = request.form["city"]
+        password = request.form["password"]
+
+        con=sq.connect("flask.db")
+        cur=con.cursor()
+        cur.execute("update reg set fullname=?,email=?,contact=?,city=?,password=? where id=?", (fullname, email, contact, city, password, id))
+
+        con.commit()
+
+        return "<script>alert('updation successful Completed'); window.location.href='/viewdata';</script>"
+
+
 
 if __name__ == '__main__':
     app.run(debug=True, port=9000)
