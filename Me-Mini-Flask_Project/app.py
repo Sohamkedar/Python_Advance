@@ -1,5 +1,6 @@
 import re
 from flask import *
+import sqlite3 as sq
 from db_config import insert_user
 
 app = Flask(__name__)
@@ -40,11 +41,32 @@ def formsave():
         return "Password must contain a special character"
 
     insert_user(fullname, email, contact, city, password)
-    return "<script>alert('Registration successful'); window.location.href='/reg';</script>"
+    return "<script>alert('Registration successful'); window.location.href='/viewdata';</script>" 
 
 @app.route('/login')
 def login():
     return render_template('login.html')
+
+@app.route("/viewdata")
+def viewdata():
+    con=sq.connect("flask.db")
+    cur=con.cursor()
+    data=cur.execute("select * from reg order by id desc")
+
+    con.commit()
+    return render_template("viewdata.html",data=data)
+
+@app.route("/deletestudent/<int:id>")
+def deletestudent(id):
+    con = sq.connect("flask.db")
+    cur = con.cursor()
+
+    cur.execute("DELETE FROM reg WHERE id=?", (id,))
+    con.commit()
+    con.close()
+
+    return redirect(url_for("viewdata"))
+
 
 if __name__ == '__main__':
     app.run(debug=True, port=9000)
