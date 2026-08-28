@@ -13,33 +13,39 @@
 </head>
 
 <body>
-    {% include 'nav.html '%}
-    <h1>Registred Student</h1>
-    <table class="table table-bordered table-striped table-danger">
-        <tr>
-            <th>ID</th>
-            <th>fullname</th>
-            <th>Email</th>
-            <th>Contact</th>
-            <th>City</th>
-            <th>Password</th>
-            <th>Action</th>
-        </tr>
-        <tr>
-        {% for i in data %}
-        <td>{{i[0]}}</td>
-        <td>{{i[1]}}</td>
-        <td>{{i[2]}}</td>
-        <td>{{i[3]}}</td>
-        <td>{{i[4]}}</td>
-        <td>{{i[5]}}</td>
-        <td>
-            <a href="/deletestudent/{{i[0]}}" class="btn btn-danger">Delete</a>
-            <a href="/updatestudent/{{i[0]}}" class="btn btn-success">Update</a>
-        </td>
-        </tr>
-        {% endfor %}
-    </table>
+    {% include 'nav.html' %}
+    <div class="container mt-4">
+        <h2 class="text-center mb-4">Registered Student</h2>
+        <table class="table table-bordered table-striped table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Fullname</th>
+                    <th>Email</th>
+                    <th>Contact</th>
+                    <th>City</th>
+                    <th>Password</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in data %}
+                <tr>
+                    <td>{{i[0]}}</td>
+                    <td>{{i[1]}}</td>
+                    <td>{{i[2]}}</td>
+                    <td>{{i[3]}}</td>
+                    <td>{{i[4]}}</td>
+                    <td>{{i[5]}}</td>
+                    <td>
+                        <a href="/deletestudent/{{i[0]}}" class="btn btn-danger btn-sm">Delete</a>
+                        <a href="/updatestudent/{{i[0]}}" class="btn btn-success btn-sm">Update</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </body>
 
 </html>

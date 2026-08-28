@@ -43,10 +43,6 @@ def formsave():
     insert_user(fullname, email, contact, city, password)
     return "<script>alert('Registration successful'); window.location.href='/viewdata';</script>" 
 
-@app.route('/login')
-def login():
-    return render_template('login.html')
-
 @app.route("/viewdata")
 def viewdata():
     con=sq.connect("flask.db")
@@ -95,6 +91,56 @@ def profileupdate():
 
         return "<script>alert('updation successful Completed'); window.location.href='/viewdata';</script>"
 
+
+@app.route('/login')
+def login():
+    return render_template('login.html')
+
+@app.route("/logincheck",methods=["GET","post"])
+def logincheck():
+    if request.method=="POST":
+        email = request.form["email"]
+        password = request.form["password"]
+
+        con=sq.connect("flask.db")
+        cur=con.cursor()
+        data=cur.execute("select * from reg where email=? and password=?", (email,password))
+        data=cur.fetchall()
+        
+        con.commit()
+        if data:
+
+            return redirect(url_for("dashboard"))
+        else:
+            return redirect(url_for("login"))
+
+    else:
+        return "Error"
+
+@app.route("/dashboard")
+def dashboard():
+    return render_template("dashboard.html")
+
+@app.route("/logout")
+def logout():
+    return render_template("login.html")
+
+
+@app.route("/fileupload")
+def fileupload():
+    return render_template("fileupload.html")
+
+
+@app.route("/filesave",methods=["GET","POST"])
+def filesave():
+    if request.method=="POST":
+        n=request.form["name"]
+        s=request.files["sign"]
+
+        s.save(s.filename)
+        return "uploaded Successfully"
+    else:
+        return "Failed"
 
 
 if __name__ == '__main__':
