@@ -5,6 +5,8 @@ from db_config import insert_user
 
 app = Flask(__name__)
 
+app.secret_key="india1232reklf"
+
 @app.route('/')
 def home():
     return render_template('home.html')
@@ -109,6 +111,7 @@ def logincheck():
         
         con.commit()
         if data:
+            session["username"]=email               #session start
 
             return redirect(url_for("dashboard"))
         else:
@@ -119,10 +122,23 @@ def logincheck():
 
 @app.route("/dashboard")
 def dashboard():
-    return render_template("dashboard.html")
+    if session.get('username') is not None:
+        email=session.get('username')
+
+        con=sq.connect("flask.db")
+        cur=con.cursor()
+        data=cur.execute("select * from reg where email=?", [email])
+        
+        data=cur.fetchone()
+                
+        con.commit()                                              #session get
+        return render_template("dashboard.html",data=data)
+    else:
+        return redirect(url_for('login'))
 
 @app.route("/logout")
 def logout():
+    session.pop('username',None)                       #session end
     return render_template("login.html")
 
 
